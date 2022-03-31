@@ -15,7 +15,7 @@ public class Delivery {
     @Column(name = "delivery_id")
     private Long id;
 
-    @OneToOne(mappedBy = "delivery")   // 하나의 배송정보는 하나의 주문상태를 가진다.
+    @OneToOne(mappedBy = "delivery", fetch = FetchType.LAZY)   // 하나의 배송정보는 하나의 주문상태를 가진다.
     private Order order;
 
     @Embedded
