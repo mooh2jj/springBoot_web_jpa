@@ -21,10 +21,10 @@ public class Order {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)   // 하나의 주문상태는 하나의 배송정보를 가진다.
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)   // 하나의 주문상태는 하나의 배송정보를 가진다.
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
