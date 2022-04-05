@@ -1,4 +1,4 @@
-package jpabook.jpashop;
+package jpabook.jpashop.controller;
 
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
