@@ -7,11 +7,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show-sql: true
         format_sql: true
+        ## 인쿼리로 변환
+        default_batch_fetch_size: 100
 
 logging:
   level:
