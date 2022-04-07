@@ -100,4 +100,12 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    public List<Order> findAllWithMemberDelivery() {
+        // 패치 조인 : 한번 쿼리로 진짜 객체로 다 땡겨오는 조인
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery", Order.class
+        ).getResultList();
+    }
 }

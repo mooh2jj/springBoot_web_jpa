@@ -34,6 +34,8 @@ public class OrderSimpleApiController {
 
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderDto> orderV2() {
+        // order 2개 거쳐감!
+        // N+1 -> 1 + 회원 N + 배송 N
         List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
         // 쿼리 총 1 + N + N 번 실행된다. (N+1문제)
         // order    조회 1번
@@ -41,6 +43,16 @@ public class OrderSimpleApiController {
         // order -> delivery  지연로딩 조회 2번
         // 결국 5번 쿼리를 날린다! => 성능
         // 지연로딩은 영속성 컨텍스트에서 조회하므로, 이미 조회된 경우 쿼리를 생략한다.
+        return orders.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
+    }
+
+    // 패치 조인 : 실무에 자주 쓰는 기술!
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> orderV3() {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+
         return orders.stream()
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
