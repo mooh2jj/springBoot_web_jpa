@@ -4,6 +4,7 @@ import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
 import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.dto.OrderSimpleQueryDto;
 import jpabook.jpashop.repository.OrderRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +57,14 @@ public class OrderSimpleApiController {
         return orders.stream()
                 .map(SimpleOrderDto::new)
                 .collect(Collectors.toList());
+    }
+
+    // 쿼리 필드수 줄일 수 있음 그러나! 재사용성이 안좋아! 네트워크가 워낙 좋아 성능 차이 미비
+    // 필드 수 30개 이상일 때는 고려해볼만 함!
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> orderV4() {
+        return orderRepository.findOrderDtos();
+
     }
 
     @Data

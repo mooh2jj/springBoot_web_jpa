@@ -3,6 +3,7 @@ package jpabook.jpashop.repository;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderSearch;
+import jpabook.jpashop.dto.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -107,5 +108,15 @@ public class OrderRepository {
                         " join fetch o.member m" +
                         " join fetch o.delivery", Order.class
         ).getResultList();
+    }
+
+    public List<OrderSimpleQueryDto> findOrderDtos() {
+        return em.createQuery(
+                // 레포지토리가 dto를 조회하는 단점!
+                "select new jpabook.jpashop.dto.OrderSimpleQueryDto(o.id, m.name, o.orderDate, o.status, d.address) " +
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d", OrderSimpleQueryDto.class)
+                .getResultList();
     }
 }
