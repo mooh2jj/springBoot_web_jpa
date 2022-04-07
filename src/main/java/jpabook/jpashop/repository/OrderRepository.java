@@ -119,4 +119,19 @@ public class OrderRepository {
                         " join o.delivery d", OrderSimpleQueryDto.class)
                 .getResultList();
     }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                // order에 대한 게 더 생겨!(뻥튀기)
+                // 해결법 : distinct 걸어주면 jpa에서 중복된 거 걸러준다.
+                        "select distinct o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d" +
+                                " join fetch o.orderItems oi" +
+                                " join fetch oi.item", Order.class)
+                // 페이징이 불가능! 컬렉션 페이 조인을 사용하면! 메모리에서 페이징해버린다.
+//                .setFirstResult(1)
+//                .setMaxResults(100)
+                .getResultList();
+    }
 }
