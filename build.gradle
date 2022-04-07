@@ -30,6 +30,8 @@ dependencies {
 //    runtimeOnly 'com.h2database:h2'
     // https://mvnrepository.com/artifact/com.h2database/h2
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+
     testCompileOnly 'org.projectlombok:lombok'
     implementation 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
