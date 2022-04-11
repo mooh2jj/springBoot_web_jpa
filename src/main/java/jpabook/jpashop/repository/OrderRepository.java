@@ -1,8 +1,9 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.Order;
-import jpabook.jpashop.domain.OrderSearch;
 import jpabook.jpashop.dto.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,9 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static jpabook.jpashop.domain.QMember.member;
+import static jpabook.jpashop.domain.QOrder.order;
 
 @Repository
 @RequiredArgsConstructor
@@ -26,6 +30,39 @@ public class OrderRepository {
 
     public Order findOne(Long id) {
         return em.find(Order.class, id);
+    }
+
+    // querydsl
+    public List<Order> findAllQuerydsl(OrderSearch orderSearch) {
+        // Q객체들은 static import도 가능해
+//        QOrder order = QOrder.order;
+//        QMember member = QMember.member;
+
+        // condition 추가 -> where()
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        return query
+                .select(order)
+                .from(order)
+                .join(order.member, member)
+                .where(statusEq(orderSearch.getOrderStatus()), namelike(orderSearch.getMemberName()))  // 동적 쿼리
+//                .where(order.status.eq(orderSearch.getOrderStatus()))   // 정적쿼리
+                .limit(1000)
+                .fetch();
+    }
+
+    // member.name.like(orderSearch.getMemberName() 대신 메서드로 정리
+    private BooleanExpression namelike(String memberName) {
+        if (!StringUtils.hasText(memberName)) {
+            return null;
+        }
+        return member.name.like(memberName);
+    }
+
+    private BooleanExpression statusEq(OrderStatus statusCond) {
+        if (statusCond == null) {
+            return null;
+        }
+        return order.status.eq(statusCond);
     }
 
     public List<Order> findAll(OrderSearch orderSearch) {

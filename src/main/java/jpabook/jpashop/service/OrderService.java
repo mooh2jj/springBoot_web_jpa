@@ -61,7 +61,8 @@ public class OrderService {
      * 주문 검색
      */
     public List<Order> findOrders(OrderSearch orderSeacrch) {
-        return orderRepository.findAll(orderSeacrch);
+//        return orderRepository.findAll(orderSeacrch);
+        return orderRepository.findAllQuerydsl(orderSeacrch);
     }
 
 }
