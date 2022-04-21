@@ -25,3 +25,8 @@
 * 회원 레포지토리 개발
 * 회원 서비스 개발
 * 회원 기능 테스트
+
+
+### ERD
+
+![image](https://user-images.githubusercontent.com/62453668/164507960-3074346d-baf1-4ffb-b171-84b4fe4bfcab.png)
